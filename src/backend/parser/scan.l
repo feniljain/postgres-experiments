@@ -366,6 +366,7 @@ less_equals		"<="
 greater_equals	">="
 less_greater	"<>"
 not_equals		"!="
+divide_and_rem  "//"
 
 /*
  * "self" is the set of chars that should be returned as single-character
@@ -876,6 +877,10 @@ other			.
 					SET_YYLLOC();
 					return NOT_EQUALS;
 				}
+{divide_and_rem}	{
+					SET_YYLLOC();
+					return DIVIDE_AND_REM;
+				}
 
 {self}			{
 					SET_YYLLOC();
@@ -974,6 +979,8 @@ other			.
 								return NOT_EQUALS;
 							if (yytext[0] == '!' && yytext[1] == '=')
 								return NOT_EQUALS;
+							if (yytext[0] == '/' && yytext[1] == '/')
+								return DIVIDE_AND_REM;
 						}
 					}
 

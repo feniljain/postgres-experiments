@@ -30,6 +30,7 @@ OBJS = \
 	datetime.o \
 	datum.o \
 	dbsize.o \
+	divide_and_rem.o \
 	domains.o \
 	encode.o \
 	enum.o \

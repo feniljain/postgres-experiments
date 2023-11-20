@@ -43,3 +43,7 @@ lib*.pc
 /Release/
 /tmp_install/
 /portlock/
+./test-run
+./test-install
+./test-data
+./**/*/tags

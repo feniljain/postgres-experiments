@@ -1,0 +1,22 @@
+#!/bin/bash -e 
+
+PG_DATA=~/pgdev/data
+
+PG_BIN=~/pgdev/bin
+
+mkdir -p $PG_DATA
+mkdir -p $PG_BIN
+
+BUILD_BIN_DIR=~/Projects/postgres/build/src/bin
+
+cp $BUILD_BIN_DIR/initdb/initdb $PG_BIN
+cp $BUILD_BIN_DIR/psql/psql $PG_BIN
+cp $BUILD_BIN_DIR/pg_ctl/pg_ctl $PG_BIN
+cp $BUILD_BIN_DIR/../backend/postgres $PG_BIN
+
+rm -rf $PG_DATA
+$PG_BIN/initdb -D $PG_DATA -U postgres
+
+$PG_BIN/psql -h localhost -U postgres
+
+$PG_BIN/pg_ctl stop -D ~/pgdev/data 

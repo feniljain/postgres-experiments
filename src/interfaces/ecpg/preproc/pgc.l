@@ -330,6 +330,7 @@ less_equals		"<="
 greater_equals	">="
 less_greater	"<>"
 not_equals		"!="
+divide_and_rem	"//"
 
 /*
  * "self" is the set of chars that should be returned as single-character
@@ -810,6 +811,9 @@ cppline			{space}*#([^i][A-Za-z]*|{if}|{ifdef}|{ifndef}|{import})((\/\*[^*/]*\*+
 					/* We accept both "<>" and "!=" as meaning NOT_EQUALS */
 					return NOT_EQUALS;
 				}
+{divide_and_rem}	{
+					return DIVIDE_AND_REM;
+				}
 
 {informix_special}	{
 			  /* are we simulating Informix? */
@@ -922,6 +926,8 @@ cppline			{space}*#([^i][A-Za-z]*|{if}|{ifdef}|{ifndef}|{import})((\/\*[^*/]*\*+
 								return NOT_EQUALS;
 							if (yytext[0] == '!' && yytext[1] == '=')
 								return NOT_EQUALS;
+							if (yytext[0] == '/' && yytext[1] == '/')
+								return DIVIDE_AND_REM;
 						}
 					}
 

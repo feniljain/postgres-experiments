@@ -3457,5 +3457,6 @@
   oprresult => 'bool', oprcom => '<<(anymultirange,anymultirange)',
   oprcode => 'multirange_after_multirange', oprrest => 'multirangesel',
   oprjoin => 'scalargtjoinsel' },
-
+{ oid => '9559', descr => 'divide_and_rem',
+  oprname => '//', oprleft => 'int2', oprright => 'int2', oprresult => 'int2', oprcode => 'divide_and_rem' },
 ]

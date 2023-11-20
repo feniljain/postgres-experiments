@@ -12070,5 +12070,8 @@
 { oid => '6292', descr => 'aggregate transition function',
   proname => 'any_value_transfn', prorettype => 'anyelement',
   proargtypes => 'anyelement anyelement', prosrc => 'any_value_transfn' },
-
+{ oid => '8780',
+  proname => 'divide_and_rem', prorettype => 'int2',
+  proargtypes => 'int2 int2',
+  prosrc => 'divide_and_rem' },
 ]

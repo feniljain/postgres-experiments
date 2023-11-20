@@ -1585,6 +1585,9 @@ OpernameGetOprid(List *names, Oid oprleft, Oid oprright)
 	/* deconstruct the name list */
 	DeconstructQualifiedName(names, &schemaname, &opername);
 
+	ereport(DEBUG1,
+		(errmsg_internal("HACK: OpernameGetOprid: schemaname: %s - opername: %s", schemaname, opername)));
+
 	if (schemaname)
 	{
 		/* search only in exact schema given */
@@ -1613,11 +1616,18 @@ OpernameGetOprid(List *names, Oid oprleft, Oid oprright)
 		return InvalidOid;
 	}
 
+	ereport(DEBUG1,
+		(errmsg_internal("HACK: OpernameGetOprid: schemaname: %s - opername: %s", schemaname, opername)));
+
 	/* Search syscache by name and argument types */
 	catlist = SearchSysCacheList3(OPERNAMENSP,
 								  CStringGetDatum(opername),
 								  ObjectIdGetDatum(oprleft),
 								  ObjectIdGetDatum(oprright));
+
+	ereport(DEBUG1,
+		(errmsg_internal("HACK: OpernameGetOprid: n_members: %d", catlist->n_members)));
+
 
 	if (catlist->n_members == 0)
 	{

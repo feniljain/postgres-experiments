@@ -276,9 +276,15 @@ binary_oper_exact(List *opname, Oid arg1, Oid arg2)
 		was_unknown = true;
 	}
 
+	ereport(DEBUG1,
+		(errmsg_internal("HACK: binary_oper_exact: was_unknown: %d", was_unknown)));
+
 	result = OpernameGetOprid(opname, arg1, arg2);
-	if (OidIsValid(result))
+	if (OidIsValid(result)) {
+		ereport(DEBUG1,
+			(errmsg_internal("HACK: binary_oper_exact: result: %d", result)));
 		return result;
+	}
 
 	if (was_unknown)
 	{
@@ -376,6 +382,9 @@ oper(ParseState *pstate, List *opname, Oid ltypeId, Oid rtypeId,
 	FuncDetailCode fdresult = FUNCDETAIL_NOTFOUND;
 	HeapTuple	tup = NULL;
 
+	ereport(DEBUG1,
+		(errmsg_internal("HACK: noError: %d", noError)));
+
 	/*
 	 * Try to find the mapping in the lookaside cache.
 	 */
@@ -383,12 +392,21 @@ oper(ParseState *pstate, List *opname, Oid ltypeId, Oid rtypeId,
 
 	if (key_ok)
 	{
+		ereport(DEBUG1,
+			(errmsg_internal("HACK: key found")));
+
 		operOid = find_oper_cache_entry(&key);
 		if (OidIsValid(operOid))
 		{
+			ereport(DEBUG1,
+				(errmsg_internal("HACK: key_ok: oid is valid")));
+
 			tup = SearchSysCache1(OPEROID, ObjectIdGetDatum(operOid));
-			if (HeapTupleIsValid(tup))
+			if (HeapTupleIsValid(tup)) {
+				ereport(DEBUG1,
+					(errmsg_internal("HACK: HeapTypeIsValid: heap tuple is valid")));
 				return (Operator) tup;
+			}
 		}
 	}
 
@@ -398,6 +416,8 @@ oper(ParseState *pstate, List *opname, Oid ltypeId, Oid rtypeId,
 	operOid = binary_oper_exact(opname, ltypeId, rtypeId);
 	if (!OidIsValid(operOid))
 	{
+		ereport(DEBUG1,
+			(errmsg_internal("HACK: invalid oid")));
 		/*
 		 * Otherwise, search for the most suitable candidate.
 		 */
@@ -425,9 +445,14 @@ oper(ParseState *pstate, List *opname, Oid ltypeId, Oid rtypeId,
 		}
 	}
 
-	if (OidIsValid(operOid))
+	if (OidIsValid(operOid)) {
+		ereport(DEBUG1,
+		  (errmsg_internal("HACK: valid oid")));
 		tup = SearchSysCache1(OPEROID, ObjectIdGetDatum(operOid));
+	}
 
+	ereport(DEBUG1,
+		(errmsg_internal("HACK: noError: %d", noError)));
 	if (HeapTupleIsValid(tup))
 	{
 		if (key_ok)
